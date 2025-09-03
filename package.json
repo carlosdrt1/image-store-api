@@ -81,7 +81,8 @@
       "\\.module\\.ts$",
       "\\.dto\\.ts$",
       "\\.interface\\.ts$",
-      "\\.abstract\\.ts$"
+      "\\.abstract\\.ts$",
+      "src/main.ts"
     ],
     "testEnvironment": "node",
     "moduleNameMapper": {
