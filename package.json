@@ -20,6 +20,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.879.0",
+    "@aws-sdk/lib-dynamodb": "^3.879.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
@@ -74,9 +76,9 @@
     ],
     "coverageDirectory": "../coverage",
     "coveragePathIgnorePatterns": [
-      "\\.module\\.ts$",         
-      "\\.dto\\.ts$",            
-      "\\.interface\\.ts$",      
+      "\\.module\\.ts$",
+      "\\.dto\\.ts$",
+      "\\.interface\\.ts$",
       "\\.abstract\\.ts$"
     ],
     "testEnvironment": "node",
