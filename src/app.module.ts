@@ -9,6 +9,7 @@ import { AuthModule } from './modules/auth/auth.module';
     UsersModule,
     AuthModule,
     ConfigModule.forRoot({
+      isGlobal: true,
       validationSchema: Joi.object({
         PORT: Joi.number().integer().positive().default(3000),
         DYNAMO_USERS_TABLE: Joi.string().required(),
@@ -16,6 +17,7 @@ import { AuthModule } from './modules/auth/auth.module';
         AWS_SECRET_ACCESS_KEY: Joi.string().required(),
         AWS_SESSION_TOKEN: Joi.string().optional(),
         AWS_REGION: Joi.string().required().default('us-east-2'),
+        JWT_SECRET: Joi.string().required(),
       }),
     }),
   ],
