@@ -1,5 +1,5 @@
 import { ConflictException, Injectable } from '@nestjs/common';
-import { CheckEmailUseCase } from 'src/modules/users/application/use-cases/check-email.use-case';
+import { FindByEmailUseCase } from 'src/modules/users/application/use-cases/find-by-email.use-case';
 import { CreateUserUseCase } from 'src/modules/users/application/use-cases/create-user.use-case';
 import { Hasher } from '../../domain/security/hasher.abstract';
 import { ResponseUserOutput } from 'src/modules/users/application/dto/user-output.dto';
@@ -8,7 +8,7 @@ import { CreateUserInput } from 'src/modules/users/application/dto/user-input.dt
 @Injectable()
 export class RegisterUserUseCase {
   constructor(
-    private readonly checkEmail: CheckEmailUseCase,
+    private readonly checkEmail: FindByEmailUseCase,
     private readonly createUser: CreateUserUseCase,
     private readonly hasher: Hasher,
   ) {}
