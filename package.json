@@ -69,9 +69,19 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "**/*.(t|j)s",
+      "!"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "coveragePathIgnorePatterns": [
+      "\\.module\\.ts$",         
+      "\\.dto\\.ts$",            
+      "\\.interface\\.ts$",      
+      "\\.abstract\\.ts$"
+    ],
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^src/(.*)$": "<rootDir>/$1"
+    }
   }
 }
