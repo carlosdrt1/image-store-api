@@ -66,7 +66,7 @@ describe('RegisterUserUseCase', () => {
       password: 'password',
     };
     findByEmailUseCase.execute.mockResolvedValue(
-      new User(crypto.randomUUID(), 'user-name', userData.email, 'hashed-pass'),
+      new User('any-id', 'user-name', userData.email, 'hashed-pass'),
     );
 
     await expect(registerUserUseCase.execute(userData)).rejects.toThrow(

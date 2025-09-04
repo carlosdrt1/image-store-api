@@ -26,12 +26,7 @@ describe('FindByEmailUseCase', () => {
 
   test('should return an user if exists', async () => {
     userRepository.findByEmail.mockResolvedValue(
-      new User(
-        crypto.randomUUID(),
-        'any-name',
-        'email@email.com',
-        'hashed-pass',
-      ),
+      new User('any-id', 'any-name', 'email@email.com', 'hashed-pass'),
     );
 
     const result = await useCase.execute('email@email.com');
