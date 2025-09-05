@@ -8,7 +8,7 @@ import {
   PutCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoUser, DynamoUserMapper } from '../mappers/user-dynamo.mapper';
+import { DynamoUser, DynamoUserMapper } from '../mappers/dynamo-user.mapper';
 
 @Injectable()
 export class DynamoUserRepository extends UserRepository {
