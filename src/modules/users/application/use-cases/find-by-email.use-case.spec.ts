@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UserRepository } from '../../domain/user.repository.abstract';
 import { FindByEmailUseCase } from './find-by-email.use-case';
 import { User } from '../../domain/user.entity';
+import { userFactory } from 'test/factories/user.factory';
 
 describe('FindByEmailUseCase', () => {
   let useCase: FindByEmailUseCase;
@@ -26,7 +27,7 @@ describe('FindByEmailUseCase', () => {
 
   test('should return an user if exists', async () => {
     userRepository.findByEmail.mockResolvedValue(
-      new User('any-id', 'any-name', 'email@email.com', 'hashed-pass'),
+      userFactory({ email: 'email@email.com' }),
     );
 
     const result = await useCase.execute('email@email.com');

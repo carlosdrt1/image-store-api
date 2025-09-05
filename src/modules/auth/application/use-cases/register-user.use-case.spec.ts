@@ -4,7 +4,7 @@ import { FindByEmailUseCase } from 'src/modules/users/application/use-cases/find
 import { CreateUserUseCase } from 'src/modules/users/application/use-cases/create-user.use-case';
 import { Hasher } from '../../domain/security/hasher.abstract';
 import { ConflictException } from '@nestjs/common';
-import { User } from 'src/modules/users/domain/user.entity';
+import { userFactory } from 'test/factories/user.factory';
 
 describe('RegisterUserUseCase', () => {
   let registerUserUseCase: RegisterUserUseCase;
@@ -66,7 +66,7 @@ describe('RegisterUserUseCase', () => {
       password: 'password',
     };
     findByEmailUseCase.execute.mockResolvedValue(
-      new User('any-id', 'user-name', userData.email, 'hashed-pass'),
+      userFactory({ email: userData.email }),
     );
 
     await expect(registerUserUseCase.execute(userData)).rejects.toThrow(
