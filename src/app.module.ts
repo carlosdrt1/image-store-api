@@ -15,6 +15,7 @@ import { ImagesModule } from './modules/images/images.module';
       validationSchema: Joi.object({
         PORT: Joi.number().integer().positive().default(3000),
         DYNAMO_USERS_TABLE: Joi.string().required(),
+        DYNAMO_IMAGES_TABLE: Joi.string().required(),
         AWS_ACCESS_KEY_ID: Joi.string().required(),
         AWS_SECRET_ACCESS_KEY: Joi.string().required(),
         AWS_SESSION_TOKEN: Joi.string().optional(),
