@@ -12,13 +12,13 @@ export class LoginUserUseCase {
     private readonly tokenService: TokenService,
   ) {}
 
-  async execute(loginInput: LoginInput): Promise<{ token: string }> {
-    const user = await this.findByEmailUseCase.execute(loginInput.email);
+  async execute(dto: LoginInput): Promise<{ token: string }> {
+    const user = await this.findByEmailUseCase.execute(dto.email);
 
     if (!user) {
       throw new UnauthorizedException('invalid credentials');
     }
-    if (!(await this.hasher.verify(user.getPassword(), loginInput.password))) {
+    if (!(await this.hasher.verify(user.getPassword(), dto.password))) {
       throw new UnauthorizedException('invalid credentials');
     }
 
