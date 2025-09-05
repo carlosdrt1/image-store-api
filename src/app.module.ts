@@ -3,11 +3,13 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { ImagesModule } from './modules/images/images.module';
 
 @Module({
   imports: [
     UsersModule,
     AuthModule,
+    ImagesModule,
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({

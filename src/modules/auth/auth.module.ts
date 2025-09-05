@@ -33,5 +33,6 @@ import { AuthGuard } from './adapters/guards/auth.guard';
     { provide: Hasher, useClass: Argon2Hasher },
     { provide: TokenService, useClass: JwtTokenService },
   ],
+  exports: [AuthGuard, { provide: TokenService, useClass: JwtTokenService }],
 })
 export class AuthModule {}

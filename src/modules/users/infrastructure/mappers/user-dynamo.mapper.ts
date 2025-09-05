@@ -9,7 +9,7 @@ export type DynamoUser = {
   updatedAt: string;
 };
 
-export class UserDynamoMapper {
+export class DynamoUserMapper {
   static toDomain(item: DynamoUser): User {
     return new User(
       item.id,

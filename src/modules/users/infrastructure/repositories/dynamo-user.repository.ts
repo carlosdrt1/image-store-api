@@ -8,10 +8,10 @@ import {
   PutCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoUser, UserDynamoMapper } from '../mappers/user-dynamo.mapper';
+import { DynamoUser, DynamoUserMapper } from '../mappers/user-dynamo.mapper';
 
 @Injectable()
-export class UserDynamoRepository extends UserRepository {
+export class DynamoUserRepository extends UserRepository {
   private readonly tableName: string;
   private readonly docClient: DynamoDBDocumentClient;
 
@@ -26,7 +26,7 @@ export class UserDynamoRepository extends UserRepository {
   }
 
   async create(data: User): Promise<User> {
-    const userDynamo = UserDynamoMapper.toPersistence(data);
+    const userDynamo = DynamoUserMapper.toPersistence(data);
 
     await this.docClient.send(
       new PutCommand({
@@ -53,6 +53,6 @@ export class UserDynamoRepository extends UserRepository {
     if (!result.Items || result.Items?.length === 0) return null;
 
     const user = result.Items[0] as DynamoUser;
-    return UserDynamoMapper.toDomain(user);
+    return DynamoUserMapper.toDomain(user);
   }
 }
