@@ -11,7 +11,7 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoUser, UserDynamoMapper } from '../mappers/user-dynamo.mapper';
 
 @Injectable()
-export class UserDynamoRepository extends UserRepository {
+export class DynamoUserRepository extends UserRepository {
   private readonly tableName: string;
   private readonly docClient: DynamoDBDocumentClient;
 
