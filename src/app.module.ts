@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 
@@ -11,6 +9,7 @@ import { AuthModule } from './modules/auth/auth.module';
     UsersModule,
     AuthModule,
     ConfigModule.forRoot({
+      isGlobal: true,
       validationSchema: Joi.object({
         PORT: Joi.number().integer().positive().default(3000),
         DYNAMO_USERS_TABLE: Joi.string().required(),
@@ -18,10 +17,9 @@ import { AuthModule } from './modules/auth/auth.module';
         AWS_SECRET_ACCESS_KEY: Joi.string().required(),
         AWS_SESSION_TOKEN: Joi.string().optional(),
         AWS_REGION: Joi.string().required().default('us-east-2'),
+        JWT_SECRET: Joi.string().required(),
       }),
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

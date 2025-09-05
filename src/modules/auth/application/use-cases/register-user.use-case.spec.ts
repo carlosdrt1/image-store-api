@@ -1,13 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RegisterUserUseCase } from './register-user.use-case';
-import { CheckEmailUseCase } from 'src/modules/users/application/use-cases/check-email.use-case';
+import { FindByEmailUseCase } from 'src/modules/users/application/use-cases/find-by-email.use-case';
 import { CreateUserUseCase } from 'src/modules/users/application/use-cases/create-user.use-case';
 import { Hasher } from '../../domain/security/hasher.abstract';
 import { ConflictException } from '@nestjs/common';
+import { userFactory } from 'test/factories/user.factory';
 
-describe('CheckEmailUseCase', () => {
+describe('RegisterUserUseCase', () => {
   let registerUserUseCase: RegisterUserUseCase;
-  let checkEmailUseCase: jest.Mocked<CheckEmailUseCase>;
+  let findByEmailUseCase: jest.Mocked<FindByEmailUseCase>;
   let hasher: jest.Mocked<Hasher>;
 
   beforeEach(async () => {
@@ -15,7 +16,7 @@ describe('CheckEmailUseCase', () => {
       providers: [RegisterUserUseCase],
     })
       .useMocker((token) => {
-        if (token === CheckEmailUseCase) {
+        if (token === FindByEmailUseCase) {
           return {
             execute: jest.fn(),
           };
@@ -36,7 +37,7 @@ describe('CheckEmailUseCase', () => {
       .compile();
 
     registerUserUseCase = moduleRef.get(RegisterUserUseCase);
-    checkEmailUseCase = moduleRef.get(CheckEmailUseCase);
+    findByEmailUseCase = moduleRef.get(FindByEmailUseCase);
     hasher = moduleRef.get(Hasher);
   });
 
@@ -45,7 +46,7 @@ describe('CheckEmailUseCase', () => {
   });
 
   test('should register an user successfully', async () => {
-    checkEmailUseCase.execute.mockResolvedValue(false);
+    findByEmailUseCase.execute.mockResolvedValue(null);
     const userData = {
       name: 'any-name',
       email: 'email@email.com',
@@ -54,17 +55,19 @@ describe('CheckEmailUseCase', () => {
 
     await registerUserUseCase.execute(userData);
 
-    expect(checkEmailUseCase.execute).toHaveBeenCalledWith(userData.email);
+    expect(findByEmailUseCase.execute).toHaveBeenCalledWith(userData.email);
     expect(hasher.hash).toHaveBeenCalledWith(userData.password);
   });
 
   test('should fail if the email is already in use', async () => {
-    checkEmailUseCase.execute.mockResolvedValue(true);
     const userData = {
       name: 'any-name',
       email: 'email@email.com',
       password: 'password',
     };
+    findByEmailUseCase.execute.mockResolvedValue(
+      userFactory({ email: userData.email }),
+    );
 
     await expect(registerUserUseCase.execute(userData)).rejects.toThrow(
       ConflictException,

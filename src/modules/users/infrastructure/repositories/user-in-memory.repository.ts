@@ -9,8 +9,8 @@ export class UserInMemoryRepository extends UserRepository {
     return Promise.resolve(user);
   }
 
-  async existsByEmail(email: string): Promise<boolean> {
+  async findByEmail(email: string): Promise<User | null> {
     const user = this.users.find((user) => user.getEmail() === email);
-    return Promise.resolve(!!user);
+    return Promise.resolve(user || null);
   }
 }

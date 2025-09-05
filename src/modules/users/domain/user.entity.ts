@@ -6,13 +6,20 @@ export class User {
   private readonly createdAt: Date;
   private updatedAt: Date;
 
-  constructor(id: string, name: string, email: string, password: string) {
+  constructor(
+    id: string,
+    name: string,
+    email: string,
+    password: string,
+    createdAt?: Date,
+    updatedAt?: Date,
+  ) {
     this.id = id;
     this.setName(name);
     this.setEmail(email);
     this.password = password;
-    this.createdAt = new Date();
-    this.updatedAt = new Date();
+    this.createdAt = createdAt ?? new Date();
+    this.updatedAt = updatedAt ?? new Date();
   }
 
   getId(): string {
