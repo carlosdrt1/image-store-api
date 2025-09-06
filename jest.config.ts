@@ -8,7 +8,7 @@ const config: Config = {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
   transformIgnorePatterns: ['/node_modules/(?!@faker-js/faker)'],
-  collectCoverageFrom: ['**/*.(t|j)s'],
+  collectCoverageFrom: ['src/**/*.(t|j)s'],
   coverageDirectory: './coverage',
   coveragePathIgnorePatterns: [
     '\\.module\\.ts$',

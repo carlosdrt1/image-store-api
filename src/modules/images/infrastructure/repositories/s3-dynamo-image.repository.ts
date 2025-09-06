@@ -1,5 +1,10 @@
 import { S3Client } from '@aws-sdk/client-s3';
-import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb';
+import {
+  DynamoDBDocumentClient,
+  PutCommand,
+  QueryCommand,
+  QueryCommandInput,
+} from '@aws-sdk/lib-dynamodb';
 import { ConfigService } from '@nestjs/config';
 import { ImageRepository } from '../../domain/image.repository.abstract';
 import { Image } from '../../domain/image.entity';
@@ -8,7 +13,7 @@ import { Readable } from 'stream';
 import { Injectable } from '@nestjs/common';
 import { Upload } from '@aws-sdk/lib-storage';
 import { measureStream } from '../utils/measure-stream.util';
-import { DynamoImageMapper } from '../mappers/image-dynamo.mapper';
+import { DynamoImage, DynamoImageMapper } from '../mappers/image-dynamo.mapper';
 
 @Injectable()
 export class S3DynamoImageRepository extends ImageRepository {
@@ -59,5 +64,51 @@ export class S3DynamoImageRepository extends ImageRepository {
     );
 
     return image;
+  }
+
+  async findAllByUser(
+    userId: string,
+    limit: number,
+    page: number,
+    imageName?: string,
+  ): Promise<Image[]> {
+    const images: Image[] = [];
+    let currentPage = 1;
+    let lastKey: Record<string, any> | undefined = undefined;
+
+    const params: QueryCommandInput = {
+      TableName: this.tableName,
+      IndexName: 'userId-originalName-index',
+      Limit: limit,
+      ExclusiveStartKey: lastKey,
+    };
+
+    if (imageName) {
+      params.KeyConditionExpression =
+        'userId = :userId AND begins_with(originalName, :name)';
+      params.ExpressionAttributeValues = {
+        ':userId': userId,
+        ':name': imageName,
+      };
+    } else {
+      params.KeyConditionExpression = 'userId = :userId';
+      params.ExpressionAttributeValues = {
+        ':userId': userId,
+      };
+    }
+
+    while (currentPage <= page) {
+      const result = await this.docClient.send(new QueryCommand(params));
+      lastKey = result.LastEvaluatedKey;
+
+      result.Items?.forEach((item: DynamoImage) =>
+        images.push(DynamoImageMapper.toDomain(item)),
+      );
+
+      if (!lastKey) break;
+      currentPage++;
+    }
+
+    return images;
   }
 }

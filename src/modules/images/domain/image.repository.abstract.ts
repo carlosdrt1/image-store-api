@@ -5,4 +5,10 @@ export abstract class ImageRepository {
     image: Image,
     fileStream: NodeJS.ReadableStream,
   ): Promise<Image>;
+  abstract findAllByUser(
+    userId: string,
+    limit: number,
+    page: number,
+    imageName?: string,
+  ): Promise<Image[]>;
 }
