@@ -15,7 +15,8 @@ const config: Config = {
     '\\.dto\\.ts$',
     '\\.interface\\.ts$',
     '\\.abstract\\.ts$',
-    './src/main.ts',
+    'main.ts',
+    '/config',
   ],
   testEnvironment: 'node',
   moduleNameMapper: {
