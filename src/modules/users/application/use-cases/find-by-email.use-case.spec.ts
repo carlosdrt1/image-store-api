@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserRepository } from '../../domain/user.repository.abstract';
+import { UserRepository } from '../../domain/repositories/user.repository.abstract';
 import { FindByEmailUseCase } from './find-by-email.use-case';
-import { User } from '../../domain/user.entity';
+import { User } from '../../domain/entities/user.entity';
 import { userFactory } from 'test/factories/user.factory';
 
 describe('FindByEmailUseCase', () => {

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserRepository } from '../../domain/user.repository.abstract';
+import { UserRepository } from '../../domain/repositories/user.repository.abstract';
 import { CreateUserUseCase } from './create-user.use-case';
-import { User } from '../../domain/user.entity';
+import { User } from '../../domain/entities/user.entity';
 import { CreateUserInput } from '../dto/user-input.dto';
 
 describe('CreateUserUseCase', () => {
