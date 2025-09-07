@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { UserRepository } from '../../domain/user.repository.abstract';
-import { User } from '../../domain/user.entity';
+import { UserRepository } from '../../domain/repositories/user.repository.abstract';
+import { User } from '../../domain/entities/user.entity';
 import { v7 as uuidv7 } from 'uuid';
 import { CreateUserInput } from '../dto/user-input.dto';
 import { ResponseUserOutput } from '../dto/user-output.dto';

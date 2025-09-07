@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { StorageProvider } from '../../domain/providers/storage.provider.abstract';
-import { Image } from '../../domain/image.entity';
+import { Image } from '../../domain/entities/image.entity';
 import { measureStream } from '../utils/measure-stream.util';
 import { Readable } from 'stream';
 import { ConfigService } from '@nestjs/config';

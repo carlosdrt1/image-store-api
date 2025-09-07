@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Image } from '../../domain/image.entity';
-import { ImageRepository } from '../../domain/image.repository.abstract';
+import { Image } from '../../domain/entities/image.entity';
+import { ImageRepository } from '../../domain/repositories/image.repository.abstract';
 import { ImageInput } from '../dto/image-input.dto';
 import { v7 as uuidv7 } from 'uuid';
-import { isValidMimeType } from '../../domain/image-mimetype.enum';
+import { isValidMimeType } from '../../domain/entities/image-mimetype.enum';
 import { StorageProvider } from '../../domain/providers/storage.provider.abstract';
 
 @Injectable()

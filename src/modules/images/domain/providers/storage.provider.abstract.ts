@@ -1,5 +1,5 @@
 import { Readable } from 'stream';
-import { Image } from '../image.entity';
+import { Image } from '../entities/image.entity';
 
 export abstract class StorageProvider {
   abstract upload(image: Image, fileStream: Readable): Promise<Image>;

@@ -1,20 +1,20 @@
 import { Test } from '@nestjs/testing';
-import { Argon2Hasher } from './argon2-hasher';
+import { Argon2HasherService } from './argon2-hasher.service';
 import * as argon2 from 'argon2';
 
-describe('Argon2Hasher', () => {
-  let hasher: Argon2Hasher;
+describe('Argon2HasherService', () => {
+  let hasherService: Argon2HasherService;
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
-      providers: [Argon2Hasher],
+      providers: [Argon2HasherService],
     }).compile();
 
-    hasher = moduleRef.get(Argon2Hasher);
+    hasherService = moduleRef.get(Argon2HasherService);
   });
 
   test('should be defined', () => {
-    expect(hasher).toBeDefined();
+    expect(hasherService).toBeDefined();
   });
 
   test('should return a hashed string successfully', async () => {
@@ -22,7 +22,7 @@ describe('Argon2Hasher', () => {
       .spyOn(argon2, 'hash')
       .mockResolvedValue('hashed-some-password');
 
-    const result = await hasher.hash('some-password');
+    const result = await hasherService.hash('some-password');
 
     expect(result).toBe('hashed-some-password');
     expect(hashSpy).toHaveBeenCalledWith('some-password', {
@@ -34,7 +34,7 @@ describe('Argon2Hasher', () => {
     const verifySpy = jest.spyOn(argon2, 'verify');
     verifySpy.mockResolvedValue(true);
 
-    const result = await hasher.verify('hashed-string', 'password');
+    const result = await hasherService.verify('hashed-string', 'password');
 
     expect(result).toBe(true);
     expect(verifySpy).toHaveBeenCalledWith('hashed-string', 'password');

@@ -2,14 +2,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { RegisterUserUseCase } from './register-user.use-case';
 import { FindByEmailUseCase } from 'src/modules/users/application/use-cases/find-by-email.use-case';
 import { CreateUserUseCase } from 'src/modules/users/application/use-cases/create-user.use-case';
-import { Hasher } from '../../domain/security/hasher.abstract';
+import { HasherService } from '../../domain/security/hasher.service.abstract';
 import { ConflictException } from '@nestjs/common';
 import { userFactory } from 'test/factories/user.factory';
 
 describe('RegisterUserUseCase', () => {
   let registerUserUseCase: RegisterUserUseCase;
   let findByEmailUseCase: jest.Mocked<FindByEmailUseCase>;
-  let hasher: jest.Mocked<Hasher>;
+  let hasherService: jest.Mocked<HasherService>;
 
   beforeEach(async () => {
     const moduleRef: TestingModule = await Test.createTestingModule({
@@ -26,7 +26,7 @@ describe('RegisterUserUseCase', () => {
             execute: jest.fn(),
           };
         }
-        if (token === Hasher) {
+        if (token === HasherService) {
           return {
             hash: jest
               .fn()
@@ -38,7 +38,7 @@ describe('RegisterUserUseCase', () => {
 
     registerUserUseCase = moduleRef.get(RegisterUserUseCase);
     findByEmailUseCase = moduleRef.get(FindByEmailUseCase);
-    hasher = moduleRef.get(Hasher);
+    hasherService = moduleRef.get(HasherService);
   });
 
   test('should be defined', () => {
@@ -56,7 +56,7 @@ describe('RegisterUserUseCase', () => {
     await registerUserUseCase.execute(userData);
 
     expect(findByEmailUseCase.execute).toHaveBeenCalledWith(userData.email);
-    expect(hasher.hash).toHaveBeenCalledWith(userData.password);
+    expect(hasherService.hash).toHaveBeenCalledWith(userData.password);
   });
 
   test('should fail if the email is already in use', async () => {

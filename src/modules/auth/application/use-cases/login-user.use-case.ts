@@ -1,14 +1,14 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { FindByEmailUseCase } from 'src/modules/users/application/use-cases/find-by-email.use-case';
 import { LoginInput } from '../dto/login-input.dto';
-import { Hasher } from '../../domain/security/hasher.abstract';
+import { HasherService } from '../../domain/security/hasher.service.abstract';
 import { TokenService } from '../../domain/security/token.service.abstract';
 
 @Injectable()
 export class LoginUserUseCase {
   constructor(
     private readonly findByEmailUseCase: FindByEmailUseCase,
-    private readonly hasher: Hasher,
+    private readonly hasherService: HasherService,
     private readonly tokenService: TokenService,
   ) {}
 
@@ -18,7 +18,7 @@ export class LoginUserUseCase {
     if (!user) {
       throw new UnauthorizedException('invalid credentials');
     }
-    if (!(await this.hasher.verify(user.getPassword(), dto.password))) {
+    if (!(await this.hasherService.verify(user.getPassword(), dto.password))) {
       throw new UnauthorizedException('invalid credentials');
     }
 

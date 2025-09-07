@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { User } from 'src/modules/users/domain/user.entity';
+import { User } from 'src/modules/users/domain/entities/user.entity';
 
 export const userFactory = (override?: {
   id?: string;
