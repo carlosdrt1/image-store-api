@@ -49,10 +49,7 @@ describe('UploadImageUseCase', () => {
 
     await uploadImageUseCase.execute(uploadData);
 
-    expect(imageRepository.create).toHaveBeenCalledWith(
-      expect.any(Image),
-      uploadData.stream,
-    );
+    expect(imageRepository.create).toHaveBeenCalledWith(expect.any(Image));
   });
 
   test('should fail if the file is not an image', async () => {
