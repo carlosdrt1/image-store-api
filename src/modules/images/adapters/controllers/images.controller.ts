@@ -11,7 +11,7 @@ import { UploadImageUseCase } from '../../application/use-cases/upload-image.use
 import { ImageInput } from '../../application/dto/image-input.dto';
 import { AuthGuard } from 'src/modules/auth/adapters/guards/auth.guard';
 import { RequestAuth } from 'src/modules/auth/adapters/types/request-auth.type';
-import { Image } from '../../domain/image.entity';
+import { Image } from '../../domain/entities/image.entity';
 import { ImagesQueryDto } from '../dto/images-query.dto';
 import { FindImagesUseCase } from '../../application/use-cases/find-images.use-case';
 

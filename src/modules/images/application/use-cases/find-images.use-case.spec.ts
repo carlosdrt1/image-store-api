@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { FindImagesUseCase } from './find-images.use-case';
-import { ImageRepository } from '../../domain/image.repository.abstract';
-import { Image } from '../../domain/image.entity';
-import { ImageMimeType } from '../../domain/image-mimetype.enum';
+import { ImageRepository } from '../../domain/repositories/image.repository.abstract';
+import { Image } from '../../domain/entities/image.entity';
+import { ImageMimeType } from '../../domain/entities/image-mimetype.enum';
 
 describe('FindImagesUseCase', () => {
   let findImagesUseCase: FindImagesUseCase;

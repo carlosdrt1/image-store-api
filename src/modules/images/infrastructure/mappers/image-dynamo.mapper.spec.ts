@@ -1,5 +1,5 @@
 import { DynamoImage, DynamoImageMapper } from './image-dynamo.mapper';
-import { ImageMimeType } from '../../domain/image-mimetype.enum';
+import { ImageMimeType } from '../../domain/entities/image-mimetype.enum';
 
 describe('DynamoImageMapper', () => {
   const dynamoImage: DynamoImage = {

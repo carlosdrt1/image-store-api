@@ -1,5 +1,5 @@
-import { ImageMimeType } from '../../domain/image-mimetype.enum';
-import { Image } from '../../domain/image.entity';
+import { ImageMimeType } from '../../domain/entities/image-mimetype.enum';
+import { Image } from '../../domain/entities/image.entity';
 
 export type DynamoImage = {
   id: string;

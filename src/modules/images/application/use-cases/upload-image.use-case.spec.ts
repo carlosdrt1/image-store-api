@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UploadImageUseCase } from './upload-image.use-case';
-import { ImageRepository } from '../../domain/image.repository.abstract';
+import { ImageRepository } from '../../domain/repositories/image.repository.abstract';
 import { ImageInput } from '../dto/image-input.dto';
 import { Readable } from 'stream';
-import { Image } from '../../domain/image.entity';
+import { Image } from '../../domain/entities/image.entity';
 import { BadRequestException } from '@nestjs/common';
 import { StorageProvider } from '../../domain/providers/storage.provider.abstract';
 

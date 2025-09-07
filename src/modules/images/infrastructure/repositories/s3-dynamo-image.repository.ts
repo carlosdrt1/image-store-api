@@ -5,8 +5,8 @@ import {
   QueryCommandInput,
 } from '@aws-sdk/lib-dynamodb';
 import { ConfigService } from '@nestjs/config';
-import { ImageRepository } from '../../domain/image.repository.abstract';
-import { Image } from '../../domain/image.entity';
+import { ImageRepository } from '../../domain/repositories/image.repository.abstract';
+import { Image } from '../../domain/entities/image.entity';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { Injectable } from '@nestjs/common';
 import { DynamoImage, DynamoImageMapper } from '../mappers/image-dynamo.mapper';

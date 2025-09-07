@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { ImageRepository } from '../../domain/image.repository.abstract';
-import { Image } from '../../domain/image.entity';
+import { ImageRepository } from '../../domain/repositories/image.repository.abstract';
+import { Image } from '../../domain/entities/image.entity';
 import { FindImagesInput } from '../dto/find-images-input.dto';
 
 @Injectable()
