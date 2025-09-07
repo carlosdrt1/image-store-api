@@ -4,10 +4,14 @@ import { ImageRepository } from '../../domain/image.repository.abstract';
 import { ImageInput } from '../dto/image-input.dto';
 import { v7 as uuidv7 } from 'uuid';
 import { isValidMimeType } from '../../domain/image-mimetype.enum';
+import { StorageProvider } from '../../domain/providers/storage.provider.abstract';
 
 @Injectable()
 export class UploadImageUseCase {
-  constructor(private readonly imageRepository: ImageRepository) {}
+  constructor(
+    private readonly imageRepository: ImageRepository,
+    private readonly storageProvider: StorageProvider,
+  ) {}
 
   async execute(dto: ImageInput): Promise<Image> {
     if (!isValidMimeType(dto.mimeType)) {
@@ -21,6 +25,8 @@ export class UploadImageUseCase {
       dto.mimeType,
     );
 
-    return this.imageRepository.save(image, dto.stream);
+    const uploadedImage = await this.storageProvider.upload(image, dto.stream);
+
+    return this.imageRepository.create(uploadedImage);
   }
 }

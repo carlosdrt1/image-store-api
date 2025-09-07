@@ -5,6 +5,7 @@ import { ImageInput } from '../dto/image-input.dto';
 import { Readable } from 'stream';
 import { Image } from '../../domain/image.entity';
 import { BadRequestException } from '@nestjs/common';
+import { StorageProvider } from '../../domain/providers/storage.provider.abstract';
 
 jest.mock('uuid', () => ({
   v7: jest.fn(() => 'any-uuid'),
@@ -20,7 +21,12 @@ describe('UploadImageUseCase', () => {
     })
       .useMocker((token) => {
         if (token === ImageRepository) {
-          return { save: jest.fn() };
+          return { create: jest.fn() };
+        }
+        if (token === StorageProvider) {
+          return {
+            upload: jest.fn().mockImplementation((image: Image) => image),
+          };
         }
       })
       .compile();
@@ -43,7 +49,7 @@ describe('UploadImageUseCase', () => {
 
     await uploadImageUseCase.execute(uploadData);
 
-    expect(imageRepository.save).toHaveBeenCalledWith(
+    expect(imageRepository.create).toHaveBeenCalledWith(
       expect.any(Image),
       uploadData.stream,
     );
