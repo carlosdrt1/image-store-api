@@ -1,7 +1,7 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { FindByEmailUseCase } from 'src/modules/users/application/use-cases/find-by-email.use-case';
 import { CreateUserUseCase } from 'src/modules/users/application/use-cases/create-user.use-case';
-import { Hasher } from '../../domain/security/hasher.abstract';
+import { HasherService } from '../../domain/security/hasher.service.abstract';
 import { ResponseUserOutput } from 'src/modules/users/application/dto/user-output.dto';
 import { CreateUserInput } from 'src/modules/users/application/dto/user-input.dto';
 
@@ -10,7 +10,7 @@ export class RegisterUserUseCase {
   constructor(
     private readonly checkEmail: FindByEmailUseCase,
     private readonly createUser: CreateUserUseCase,
-    private readonly hasher: Hasher,
+    private readonly hasherService: HasherService,
   ) {}
 
   async execute(dto: CreateUserInput): Promise<ResponseUserOutput> {
@@ -19,7 +19,7 @@ export class RegisterUserUseCase {
       throw new ConflictException('Email already in use');
     }
 
-    const hashedPassword = await this.hasher.hash(dto.password);
+    const hashedPassword = await this.hasherService.hash(dto.password);
 
     const user = await this.createUser.execute({
       ...dto,

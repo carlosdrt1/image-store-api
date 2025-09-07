@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LoginUserUseCase } from './login-user.use-case';
 import { FindByEmailUseCase } from 'src/modules/users/application/use-cases/find-by-email.use-case';
-import { Hasher } from '../../domain/security/hasher.abstract';
+import { HasherService } from '../../domain/security/hasher.service.abstract';
 import { TokenService } from '../../domain/security/token.service.abstract';
 import { userFactory } from 'test/factories/user.factory';
 import { UnauthorizedException } from '@nestjs/common';
@@ -9,7 +9,7 @@ import { UnauthorizedException } from '@nestjs/common';
 describe('LoginUserUseCase', () => {
   let loginUserUseCase: LoginUserUseCase;
   let findByEmailUseCase: jest.Mocked<FindByEmailUseCase>;
-  let hasher: jest.Mocked<Hasher>;
+  let hasherService: jest.Mocked<HasherService>;
 
   beforeEach(async () => {
     const moduleRef: TestingModule = await Test.createTestingModule({
@@ -21,7 +21,7 @@ describe('LoginUserUseCase', () => {
             execute: jest.fn(),
           };
         }
-        if (token === Hasher) {
+        if (token === HasherService) {
           return {
             verify: jest.fn(),
           };
@@ -36,7 +36,7 @@ describe('LoginUserUseCase', () => {
 
     loginUserUseCase = moduleRef.get(LoginUserUseCase);
     findByEmailUseCase = moduleRef.get(FindByEmailUseCase);
-    hasher = moduleRef.get(Hasher);
+    hasherService = moduleRef.get(HasherService);
   });
 
   test('should be defined', () => {
@@ -51,13 +51,13 @@ describe('LoginUserUseCase', () => {
     const userFind = userFactory({ email: loginData.email });
 
     findByEmailUseCase.execute.mockResolvedValue(userFind);
-    hasher.verify.mockResolvedValue(true);
+    hasherService.verify.mockResolvedValue(true);
 
     const result = await loginUserUseCase.execute(loginData);
 
     expect(result).toStrictEqual({ token: 'valid-jwt' });
     expect(findByEmailUseCase.execute).toHaveBeenCalledWith(loginData.email);
-    expect(hasher.verify).toHaveBeenCalledWith(
+    expect(hasherService.verify).toHaveBeenCalledWith(
       userFind.getPassword(),
       loginData.password,
     );
@@ -85,7 +85,7 @@ describe('LoginUserUseCase', () => {
     findByEmailUseCase.execute.mockResolvedValue(
       userFactory({ email: loginData.email }),
     );
-    hasher.verify.mockResolvedValue(false);
+    hasherService.verify.mockResolvedValue(false);
 
     await expect(loginUserUseCase.execute(loginData)).rejects.toThrow(
       UnauthorizedException,

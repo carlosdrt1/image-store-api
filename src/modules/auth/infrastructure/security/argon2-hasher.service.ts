@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Hasher } from '../../domain/security/hasher.abstract';
+import { HasherService } from '../../domain/security/hasher.service.abstract';
 import * as argon2 from 'argon2';
 
 @Injectable()
-export class Argon2Hasher extends Hasher {
+export class Argon2HasherService extends HasherService {
   async hash(text: string): Promise<string> {
     return argon2.hash(text, {
       type: argon2.argon2id,
