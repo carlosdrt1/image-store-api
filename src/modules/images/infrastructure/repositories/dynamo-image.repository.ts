@@ -12,7 +12,7 @@ import { Injectable } from '@nestjs/common';
 import { DynamoImage, DynamoImageMapper } from '../mappers/image-dynamo.mapper';
 
 @Injectable()
-export class S3DynamoImageRepository extends ImageRepository {
+export class DynamoImageRepository extends ImageRepository {
   private readonly tableName: string;
   private readonly docClient: DynamoDBDocumentClient;
 
