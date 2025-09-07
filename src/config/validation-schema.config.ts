@@ -8,5 +8,6 @@ export const validationConfigSchema = Joi.object({
   AWS_SECRET_ACCESS_KEY: Joi.string().required(),
   AWS_SESSION_TOKEN: Joi.string().optional(),
   AWS_REGION: Joi.string().required().default('us-east-2'),
+  AWS_BUCKET_NAME: Joi.string().required(),
   JWT_SECRET: Joi.string().required(),
 });
