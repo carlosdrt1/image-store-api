@@ -8,4 +8,6 @@ export abstract class ImageRepository {
     page: number,
     imageName?: string,
   ): Promise<Image[]>;
+  abstract findByName(name: string, userId: string): Promise<Image | null>;
+  abstract remove(id: string): Promise<void>;
 }
