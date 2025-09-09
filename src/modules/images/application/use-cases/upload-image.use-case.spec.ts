@@ -64,7 +64,7 @@ describe('UploadImageUseCase', () => {
     ).rejects.toThrow(BadRequestException);
   });
 
-  test('should fail if the filename already exists', async () => {
+  test('should fail if the an image with the same filename already exists', async () => {
     imageRepository.findByName.mockResolvedValue(
       new Image('any-id', 'user-id', 'my-image.png', ImageMimeType.JPG),
     );
