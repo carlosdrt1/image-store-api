@@ -1,17 +1,15 @@
 import { Module } from '@nestjs/common';
-import { CheckEmailUseCase } from './application/use-cases/check-email.use-case';
+import { FindByEmailUseCase } from './application/use-cases/find-by-email.use-case';
 import { CreateUserUseCase } from './application/use-cases/create-user.use-case';
-import { UserRepository } from './domain/user.repository.abstract';
-import { UserDynamoRepository } from './infrastructure/repositories/user-dynamo.repository';
-import { ConfigModule } from '@nestjs/config';
+import { UserRepository } from './domain/repositories/user.repository.abstract';
+import { DynamoUserRepository } from './infrastructure/repositories/dynamo-user.repository';
 
 @Module({
-  imports: [ConfigModule],
   providers: [
-    CheckEmailUseCase,
+    FindByEmailUseCase,
     CreateUserUseCase,
-    { provide: UserRepository, useClass: UserDynamoRepository },
+    { provide: UserRepository, useClass: DynamoUserRepository },
   ],
-  exports: [CheckEmailUseCase, CreateUserUseCase],
+  exports: [FindByEmailUseCase, CreateUserUseCase],
 })
 export class UsersModule {}

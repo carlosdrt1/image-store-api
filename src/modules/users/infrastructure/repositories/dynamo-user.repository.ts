@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { UserRepository } from '../../domain/user.repository.abstract';
-import { User } from '../../domain/user.entity';
+import { UserRepository } from '../../domain/repositories/user.repository.abstract';
+import { User } from '../../domain/entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 import {
   DynamoDBDocumentClient,
@@ -8,9 +8,10 @@ import {
   PutCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoUser, DynamoUserMapper } from '../mappers/dynamo-user.mapper';
 
 @Injectable()
-export class UserDynamoRepository extends UserRepository {
+export class DynamoUserRepository extends UserRepository {
   private readonly tableName: string;
   private readonly docClient: DynamoDBDocumentClient;
 
@@ -25,24 +26,19 @@ export class UserDynamoRepository extends UserRepository {
   }
 
   async create(data: User): Promise<User> {
+    const userDynamo = DynamoUserMapper.toPersistence(data);
+
     await this.docClient.send(
       new PutCommand({
         TableName: this.tableName,
-        Item: {
-          id: data.getId(),
-          name: data.getName(),
-          email: data.getEmail(),
-          password: data.getPassword(),
-          createdAt: data.getCreatedAt().toISOString(),
-          updatedAt: data.getUpdatedAt().toISOString(),
-        },
+        Item: userDynamo,
       }),
     );
 
     return data;
   }
 
-  async existsByEmail(email: string): Promise<boolean> {
+  async findByEmail(email: string): Promise<User | null> {
     const result = await this.docClient.send(
       new QueryCommand({
         TableName: this.tableName,
@@ -54,7 +50,9 @@ export class UserDynamoRepository extends UserRepository {
         Limit: 1,
       }),
     );
+    if (!result.Items || result.Items?.length === 0) return null;
 
-    return (result.Count ?? 0) > 0;
+    const user = result.Items[0] as DynamoUser;
+    return DynamoUserMapper.toDomain(user);
   }
 }
