@@ -37,7 +37,7 @@ export class DynamoImageRepository extends ImageRepository {
     return image;
   }
 
-  async findAllByUser(
+  async findAllByUserPaginated(
     userId: string,
     limit: number,
     page: number,

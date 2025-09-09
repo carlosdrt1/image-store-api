@@ -2,7 +2,7 @@ import { Image } from '../entities/image.entity';
 
 export abstract class ImageRepository {
   abstract create(image: Image): Promise<Image>;
-  abstract findAllByUser(
+  abstract findAllByUserPaginated(
     userId: string,
     limit: number,
     page: number,
