@@ -37,9 +37,7 @@ export class S3StorageProvider extends StorageProvider {
 
     const done = await upload.done();
 
-    image.setSize(getSize());
-    image.setUrl(done.Location!);
-    image.setKey(key);
+    image.toStorage(done.Location!, getSize(), key);
 
     return image;
   }
