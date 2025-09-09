@@ -1,7 +1,10 @@
 import {
   BadRequestException,
   Controller,
+  Delete,
   Get,
+  HttpCode,
+  Param,
   Post,
   Query,
   Req,
@@ -14,12 +17,14 @@ import { RequestAuth } from 'src/modules/auth/adapters/types/request-auth.type';
 import { Image } from '../../domain/entities/image.entity';
 import { ImagesQueryDto } from '../dto/images-query.dto';
 import { FindImagesUseCase } from '../../application/use-cases/find-images.use-case';
+import { RemoveImageUseCase } from '../../application/use-cases/remove-image.use-case';
 
 @Controller('images')
 export class ImagesController {
   constructor(
     private readonly uploadImageUseCase: UploadImageUseCase,
     private readonly findImagesUseCase: FindImagesUseCase,
+    private readonly removeImageUseCase: RemoveImageUseCase,
   ) {}
 
   @Post('upload')
@@ -43,5 +48,12 @@ export class ImagesController {
   @UseGuards(AuthGuard)
   async findAll(@Query() query: ImagesQueryDto, @Req() req: RequestAuth) {
     return this.findImagesUseCase.execute({ userId: req.user.id, ...query });
+  }
+
+  @HttpCode(204)
+  @Delete(':name')
+  @UseGuards(AuthGuard)
+  async remove(@Param('name') name: string, @Req() req: RequestAuth) {
+    return this.removeImageUseCase.execute(name, req.user.id);
   }
 }
