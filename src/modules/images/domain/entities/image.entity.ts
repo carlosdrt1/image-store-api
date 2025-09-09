@@ -48,15 +48,13 @@ export class Image {
     return this.uploadedAt;
   }
 
-  public setUrl(url: string) {
+  public toStorage(url: string, size: number, key: string) {
+    if (size <= 0) {
+      throw new Error('Invalid image size');
+    }
+
     this.url = url;
-  }
-
-  public setSize(size: number) {
     this.size = size;
-  }
-
-  public setKey(key: string) {
     this.key = key;
   }
 }

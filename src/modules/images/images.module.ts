@@ -7,6 +7,7 @@ import { AuthModule } from '../auth/auth.module';
 import { FindImagesUseCase } from './application/use-cases/find-images.use-case';
 import { S3StorageProvider } from './infrastructure/providers/s3-storage.provider';
 import { StorageProvider } from './domain/providers/storage.provider.abstract';
+import { RemoveImageUseCase } from './application/use-cases/remove-image.use-case';
 
 @Module({
   imports: [AuthModule],
@@ -14,6 +15,7 @@ import { StorageProvider } from './domain/providers/storage.provider.abstract';
   providers: [
     UploadImageUseCase,
     FindImagesUseCase,
+    RemoveImageUseCase,
     { provide: ImageRepository, useClass: DynamoImageRepository },
     { provide: StorageProvider, useClass: S3StorageProvider },
   ],
