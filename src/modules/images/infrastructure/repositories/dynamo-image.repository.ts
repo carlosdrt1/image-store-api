@@ -1,4 +1,5 @@
 import {
+  DeleteCommand,
   DynamoDBDocumentClient,
   PutCommand,
   QueryCommand,
@@ -80,5 +81,35 @@ export class DynamoImageRepository extends ImageRepository {
     }
 
     return images;
+  }
+
+  async findByName(name: string, userId: string): Promise<Image | null> {
+    const result = await this.docClient.send(
+      new QueryCommand({
+        TableName: this.tableName,
+        IndexName: 'userId-originalName-index',
+        KeyConditionExpression:
+          'userId = :userId AND originalName = :originalName',
+        ExpressionAttributeValues: {
+          ':userId': userId,
+          ':originalName': name,
+        },
+        Limit: 1,
+      }),
+    );
+
+    if (!result.Items || result.Items?.length === 0) return null;
+
+    const image = result.Items[0] as DynamoImage;
+    return DynamoImageMapper.toDomain(image);
+  }
+
+  async remove(id: string) {
+    await this.docClient.send(
+      new DeleteCommand({
+        TableName: this.tableName,
+        Key: { id },
+      }),
+    );
   }
 }
