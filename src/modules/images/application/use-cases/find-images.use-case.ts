@@ -13,7 +13,7 @@ export class FindImagesUseCase {
   ): Promise<{ page: number; limit: number; data: Image[] }> {
     const { page = 1, limit = 10, name } = dto;
 
-    const images = await this.imageRepository.findAllByUser(
+    const images = await this.imageRepository.findAllByUserPaginated(
       userId,
       limit,
       page,

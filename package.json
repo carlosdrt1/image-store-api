@@ -25,6 +25,7 @@
     "@aws-sdk/lib-dynamodb": "^3.879.0",
     "@aws-sdk/lib-storage": "^3.882.0",
     "@fastify/multipart": "^9.2.1",
+    "@json2csv/node": "^7.0.6",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",

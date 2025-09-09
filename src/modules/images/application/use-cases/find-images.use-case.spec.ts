@@ -14,7 +14,7 @@ describe('FindImagesUseCase', () => {
     })
       .useMocker((token) => {
         if (token === ImageRepository) {
-          return { findAllByUser: jest.fn() };
+          return { findAllByUserPaginated: jest.fn() };
         }
       })
       .compile();
@@ -42,7 +42,7 @@ describe('FindImagesUseCase', () => {
       ),
     ];
 
-    imageRepository.findAllByUser.mockResolvedValue(images);
+    imageRepository.findAllByUserPaginated.mockResolvedValue(images);
 
     const result = await findImagesUseCase.execute(
       {
@@ -53,7 +53,7 @@ describe('FindImagesUseCase', () => {
       userId,
     );
 
-    expect(imageRepository.findAllByUser).toHaveBeenCalledWith(
+    expect(imageRepository.findAllByUserPaginated).toHaveBeenCalledWith(
       userId,
       5,
       2,
@@ -71,11 +71,11 @@ describe('FindImagesUseCase', () => {
     const userId = 'any-id';
     const images: Image[] = [];
 
-    imageRepository.findAllByUser.mockResolvedValue(images);
+    imageRepository.findAllByUserPaginated.mockResolvedValue(images);
 
     const result = await findImagesUseCase.execute({}, userId);
 
-    expect(imageRepository.findAllByUser).toHaveBeenCalledWith(
+    expect(imageRepository.findAllByUserPaginated).toHaveBeenCalledWith(
       userId,
       10,
       1,
