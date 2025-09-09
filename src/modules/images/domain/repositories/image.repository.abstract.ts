@@ -9,5 +9,6 @@ export abstract class ImageRepository {
     imageName?: string,
   ): Promise<Image[]>;
   abstract findByName(name: string, userId: string): Promise<Image | null>;
+  abstract findAllByUser(userId: string): Promise<Image[]>;
   abstract remove(id: string): Promise<void>;
 }

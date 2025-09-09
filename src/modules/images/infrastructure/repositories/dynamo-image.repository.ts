@@ -112,4 +112,25 @@ export class DynamoImageRepository extends ImageRepository {
       }),
     );
   }
+
+  async findAllByUser(userId: string): Promise<Image[]> {
+    const result = await this.docClient.send(
+      new QueryCommand({
+        TableName: this.tableName,
+        IndexName: 'userId-originalName-index',
+        KeyConditionExpression: 'userId = :userId',
+        ExpressionAttributeValues: {
+          ':userId': userId,
+        },
+      }),
+    );
+
+    if (!result.Items) return [];
+
+    const images = result.Items?.map((image: DynamoImage) =>
+      DynamoImageMapper.toDomain(image),
+    );
+
+    return images;
+  }
 }
