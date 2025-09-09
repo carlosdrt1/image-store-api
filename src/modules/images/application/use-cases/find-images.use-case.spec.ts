@@ -44,12 +44,14 @@ describe('FindImagesUseCase', () => {
 
     imageRepository.findAllByUser.mockResolvedValue(images);
 
-    const result = await findImagesUseCase.execute({
+    const result = await findImagesUseCase.execute(
+      {
+        page: 2,
+        limit: 5,
+        name: 'photo',
+      },
       userId,
-      page: 2,
-      limit: 5,
-      name: 'photo',
-    });
+    );
 
     expect(imageRepository.findAllByUser).toHaveBeenCalledWith(
       userId,
@@ -71,7 +73,7 @@ describe('FindImagesUseCase', () => {
 
     imageRepository.findAllByUser.mockResolvedValue(images);
 
-    const result = await findImagesUseCase.execute({ userId });
+    const result = await findImagesUseCase.execute({}, userId);
 
     expect(imageRepository.findAllByUser).toHaveBeenCalledWith(
       userId,

@@ -32,22 +32,21 @@ export class ImagesController {
   async uploadImage(@Req() req: RequestAuth): Promise<Image> {
     const data = await req.file();
 
-    if (!data) throw new BadRequestException();
+    if (!data) throw new BadRequestException('image not uploaded');
 
     const imageInput: ImageInput = {
-      userId: req.user.id,
       originalName: data.filename,
       mimeType: data.mimetype,
       stream: data.file,
     };
 
-    return this.uploadImageUseCase.execute(imageInput);
+    return this.uploadImageUseCase.execute(imageInput, req.user.id);
   }
 
   @Get()
   @UseGuards(AuthGuard)
   async findAll(@Query() query: ImagesQueryDto, @Req() req: RequestAuth) {
-    return this.findImagesUseCase.execute({ userId: req.user.id, ...query });
+    return this.findImagesUseCase.execute(query, req.user.id);
   }
 
   @HttpCode(204)

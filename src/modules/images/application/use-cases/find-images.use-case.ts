@@ -9,11 +9,12 @@ export class FindImagesUseCase {
 
   async execute(
     dto: FindImagesInput,
+    userId: string,
   ): Promise<{ page: number; limit: number; data: Image[] }> {
     const { page = 1, limit = 10, name } = dto;
 
     const images = await this.imageRepository.findAllByUser(
-      dto.userId,
+      userId,
       limit,
       page,
       name,
