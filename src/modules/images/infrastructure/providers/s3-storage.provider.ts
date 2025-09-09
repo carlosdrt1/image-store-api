@@ -4,7 +4,7 @@ import { Image } from '../../domain/entities/image.entity';
 import { measureStream } from '../utils/measure-stream.util';
 import { Readable } from 'stream';
 import { ConfigService } from '@nestjs/config';
-import { S3Client } from '@aws-sdk/client-s3';
+import { DeleteObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Upload } from '@aws-sdk/lib-storage';
 
 @Injectable()
@@ -40,5 +40,14 @@ export class S3StorageProvider extends StorageProvider {
     image.toStorage(done.Location!, getSize(), key);
 
     return image;
+  }
+
+  async remove(key: string): Promise<void> {
+    await this.clientS3.send(
+      new DeleteObjectCommand({
+        Bucket: this.bucketName,
+        Key: key,
+      }),
+    );
   }
 }
