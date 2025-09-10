@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { StorageProvider } from '../../domain/providers/storage.provider.abstract';
 import { Image } from '../../domain/entities/image.entity';
-import { measureStream } from '../utils/measure-stream.util';
 import { Readable } from 'stream';
 import { ConfigService } from '@nestjs/config';
 import { DeleteObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Upload } from '@aws-sdk/lib-storage';
+import { buffer } from 'stream/consumers';
 
 @Injectable()
 export class S3StorageProvider extends StorageProvider {
@@ -22,22 +22,21 @@ export class S3StorageProvider extends StorageProvider {
   async upload(image: Image, fileStream: Readable): Promise<Image> {
     const extension = image.getOriginalName().split('.').pop();
     const key = `public/${image.getId()}.${extension}`;
-
-    const { stream, getSize } = measureStream(fileStream);
+    const bufferFile = await buffer(fileStream);
 
     const upload = new Upload({
       client: this.clientS3,
       params: {
         Bucket: this.bucketName,
         Key: key,
-        Body: stream,
+        Body: bufferFile,
         ContentType: image.getMimeType(),
       },
     });
 
     const done = await upload.done();
 
-    image.toStorage(done.Location!, getSize(), key);
+    image.toStorage(done.Location!, bufferFile.length, key);
 
     return image;
   }
