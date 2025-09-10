@@ -13,8 +13,7 @@ export class Argon2HasherService extends HasherService {
   async verify(hashed: string, text: string): Promise<boolean> {
     try {
       return await argon2.verify(hashed, text);
-    } catch (error) {
-      console.log(error);
+    } catch {
       throw new Error('Password verification failed');
     }
   }
