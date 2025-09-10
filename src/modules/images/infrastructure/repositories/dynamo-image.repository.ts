@@ -17,10 +17,13 @@ export class DynamoImageRepository extends ImageRepository {
   private readonly tableName: string;
   private readonly docClient: DynamoDBDocumentClient;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    docClient?: DynamoDBDocumentClient,
+  ) {
     super();
-    const client = new DynamoDBClient({});
-    this.docClient = DynamoDBDocumentClient.from(client);
+    this.docClient =
+      docClient ?? DynamoDBDocumentClient.from(new DynamoDBClient({}));
     this.tableName = this.configService.get<string>('DYNAMO_IMAGES_TABLE')!;
   }
 
