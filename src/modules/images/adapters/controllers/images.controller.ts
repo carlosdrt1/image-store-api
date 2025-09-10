@@ -50,7 +50,10 @@ export class ImagesController {
 
   @Get()
   @UseGuards(AuthGuard)
-  async findAll(@Query() query: ImagesQueryDto, @Req() req: RequestAuth) {
+  async findAll(
+    @Query() query: ImagesQueryDto,
+    @Req() req: RequestAuth,
+  ): Promise<{ page: number; limit: number; data: Image[] }> {
     return this.findImagesUseCase.execute(query, req.user.id);
   }
 
@@ -59,7 +62,7 @@ export class ImagesController {
   async exportToCsv(
     @Req() req: RequestAuth,
     @Res({ passthrough: true }) reply: FastifyReply,
-  ) {
+  ): Promise<void> {
     const csvData = await this.exportImagesToCsvUseCase.execute(req.user.id);
 
     reply
@@ -74,7 +77,10 @@ export class ImagesController {
   @HttpCode(204)
   @Delete(':name')
   @UseGuards(AuthGuard)
-  async remove(@Param('name') name: string, @Req() req: RequestAuth) {
+  async remove(
+    @Param('name') name: string,
+    @Req() req: RequestAuth,
+  ): Promise<void> {
     return this.removeImageUseCase.execute(name, req.user.id);
   }
 }
