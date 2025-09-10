@@ -5,14 +5,14 @@ export class ImagesQueryDto {
   @IsOptional()
   @Type(() => Number)
   @IsInt()
-  page: number;
+  page?: number;
 
   @IsOptional()
   @Type(() => Number)
   @IsInt()
-  limit: number;
+  limit?: number;
 
   @IsOptional()
   @IsString()
-  name: string;
+  name?: string;
 }
