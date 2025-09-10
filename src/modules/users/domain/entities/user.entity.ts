@@ -62,27 +62,4 @@ export class User {
 
     this.email = email;
   }
-
-  update(data: { name?: string; email?: string; password?: string }) {
-    let updated = false;
-
-    if (data.name) {
-      this.setName(data.name);
-      updated = true;
-    }
-
-    if (data.email) {
-      this.setEmail(data.email);
-      updated = true;
-    }
-
-    if (data.password) {
-      this.password = data.password;
-      updated = true;
-    }
-
-    if (updated) {
-      this.updatedAt = new Date();
-    }
-  }
 }
