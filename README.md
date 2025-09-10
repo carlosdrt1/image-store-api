@@ -63,13 +63,13 @@ docker-compose up -d
 
 ## Project Routes
 
-POST /images/upload -> upload an new image
-GET /images -> return all image data paginated
-GET /images/export-csv -> export image data to a csv file
-DELETE /images/:imageName -> delete an image by name
+- POST /images/upload -> upload an new image
+- GET /images -> return all image data paginated
+- GET /images/export-csv -> export image data to a csv file
+- DELETE /images/:imageName -> delete an image by name
 
-POST /auth/register -> register a new user
-POST /auth/login -> return a token if the login is valid
+- POST /auth/register -> register a new user
+- POST /auth/login -> return a token if the login is valid
 
 ## Running Unit Tests
 
@@ -78,4 +78,5 @@ To run unit tests, run the following command
 ```bash
 npm test
 ```
+
 
