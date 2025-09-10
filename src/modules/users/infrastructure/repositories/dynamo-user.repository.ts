@@ -15,17 +15,13 @@ export class DynamoUserRepository extends UserRepository {
   private readonly tableName: string;
   private readonly docClient: DynamoDBDocumentClient;
 
-  constructor(
-    private readonly configService: ConfigService,
-    docClient?: DynamoDBDocumentClient,
-  ) {
+  constructor(private readonly configService: ConfigService) {
     super();
     this.tableName = this.configService.get<string>(
       'DYNAMO_USERS_TABLE',
       'Users',
     );
-    this.docClient =
-      docClient ?? DynamoDBDocumentClient.from(new DynamoDBClient({}));
+    this.docClient = DynamoDBDocumentClient.from(new DynamoDBClient({}));
   }
 
   async create(data: User): Promise<User> {
