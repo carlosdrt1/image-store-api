@@ -1,4 +1,4 @@
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { Argon2HasherService } from './argon2-hasher.service';
 import * as argon2 from 'argon2';
 
@@ -6,7 +6,7 @@ describe('Argon2HasherService', () => {
   let hasherService: Argon2HasherService;
 
   beforeEach(async () => {
-    const moduleRef = await Test.createTestingModule({
+    const moduleRef: TestingModule = await Test.createTestingModule({
       providers: [Argon2HasherService],
     }).compile();
 
@@ -38,5 +38,14 @@ describe('Argon2HasherService', () => {
 
     expect(result).toBe(true);
     expect(verifySpy).toHaveBeenCalledWith('hashed-string', 'password');
+  });
+
+  test('should throw an error if password verification fails', async () => {
+    const verifySpy = jest.spyOn(argon2, 'verify');
+    verifySpy.mockRejectedValue(new Error());
+
+    await expect(
+      hasherService.verify('hashed-string', 'password'),
+    ).rejects.toThrow(Error);
   });
 });
